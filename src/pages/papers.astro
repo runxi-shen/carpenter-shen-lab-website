@@ -1,0 +1,135 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPapers = await getCollection('papers');
+const papers = allPapers.sort((a, b) => b.data.year - a.data.year);
+
+const byYear = papers.reduce<Record<number, typeof papers>>((acc, p) => {
+  (acc[p.data.year] ??= []).push(p);
+  return acc;
+}, {});
+
+const years = Object.keys(byYear).map(Number).sort((a, b) => b - a);
+---
+
+<PageLayout
+  title="Papers | Carpenter-Shen Lab"
+  description="Publications from the Carpenter-Shen Lab at Purdue University."
+>
+  <section class="py-28 px-4 sm:px-6 lg:px-8" style="background: var(--bg-content);">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="section-label">Our Work</span>
+        <h1 class="mt-6" style="color: var(--text-heading); font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; letter-spacing: -0.03em;">
+          Publications
+        </h1>
+        <p class="mt-6 max-w-2xl mx-auto text-lg text-center" style="color: var(--text-secondary);">
+          Peer-reviewed research from the Carpenter-Shen Lab.
+        </p>
+        <div class="section-divider mt-10 w-32 mx-auto"></div>
+      </div>
+
+      {papers.length === 0 ? (
+        <div class="text-center py-24">
+          <div class="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center" style="background: var(--border-subtle);">
+            <svg class="w-8 h-8" style="color: var(--text-secondary);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p class="text-lg font-semibold" style="color: var(--text-heading);">Papers coming soon</p>
+          <p class="mt-2 text-base text-center" style="color: var(--text-secondary);">
+            We are populating our publications list. Check back shortly.
+          </p>
+          <a
+            href="https://scholar.google.com/citations?user=PDDm4zQAAAAJ"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-lg font-semibold text-base transition-colors"
+            style="background: color-mix(in srgb, var(--accent-gold) 15%, transparent); color: var(--accent-gold); border: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);"
+          >
+            View on Google Scholar
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
+      ) : (
+        <div class="space-y-12">
+          {years.map(year => (
+            <div>
+              <h2 class="text-3xl font-bold mb-6 pb-3" style="color: var(--accent-gold); border-bottom: 1px solid var(--border-subtle);">
+                {year}
+              </h2>
+              <div class="space-y-6">
+                {byYear[year].map(paper => (
+                  <article class="card-base p-7">
+                    <h3 class="text-lg font-semibold mb-2 leading-snug" style="color: var(--text-heading);">
+                      {paper.data.doi ? (
+                        <a
+                          href={`https://doi.org/${paper.data.doi}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="hover:underline"
+                          style="color: var(--text-heading);"
+                        >
+                          {paper.data.title}
+                        </a>
+                      ) : paper.data.title}
+                    </h3>
+                    <p class="text-sm mb-2" style="color: var(--text-secondary);">
+                      {paper.data.authors.map((author, i) => (
+                        <span>
+                          <span style={paper.data.labAuthors.includes(author) ? 'font-semibold; color: var(--text-heading);' : ''}>
+                            {author}
+                          </span>
+                          {i < paper.data.authors.length - 1 && ', '}
+                        </span>
+                      ))}
+                    </p>
+                    <p class="text-sm font-medium italic" style="color: var(--accent-teal);">
+                      {paper.data.journal}
+                      {paper.data.volume && `, ${paper.data.volume}`}
+                      {paper.data.pages && `, ${paper.data.pages}`}
+                      {' '}({paper.data.year})
+                    </p>
+                    <div class="flex flex-wrap gap-3 mt-4">
+                      <span class="mono-label text-xs" style="font-size: 0.7rem;">{paper.data.type}</span>
+                      {paper.data.highlight && (
+                        <span class="mono-label text-xs" style="font-size: 0.7rem; background: color-mix(in srgb, var(--accent-gold) 12%, transparent); color: var(--accent-gold);">
+                          highlight
+                        </span>
+                      )}
+                      {paper.data.doi && (
+                        <a
+                          href={`https://doi.org/${paper.data.doi}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-xs font-mono hover:underline"
+                          style="color: var(--text-secondary);"
+                        >
+                          DOI: {paper.data.doi}
+                        </a>
+                      )}
+                      {paper.data.github && (
+                        <a
+                          href={paper.data.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-xs font-mono hover:underline"
+                          style="color: var(--accent-teal);"
+                        >
+                          GitHub
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>

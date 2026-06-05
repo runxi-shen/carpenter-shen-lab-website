@@ -1,0 +1,88 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const allPositions = await getCollection('positions');
+const openPositions = allPositions.filter(p => p.data.open);
+---
+
+<PageLayout
+  title="Positions | Carpenter-Shen Lab"
+  description="Open positions and opportunities to join the Carpenter-Shen Lab at Purdue University."
+>
+  <section class="py-28 px-4 sm:px-6 lg:px-8" style="background: var(--bg-content);">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="section-label">Join Us</span>
+        <h1 class="mt-6" style="color: var(--text-heading); font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; letter-spacing: -0.03em;">
+          Open Positions
+        </h1>
+        <p class="mt-6 max-w-2xl mx-auto text-lg text-center" style="color: var(--text-secondary);">
+          We are always looking for talented and motivated people to join our team. If you are passionate about
+          computational biology, machine learning, and drug discovery, we would love to hear from you.
+        </p>
+        <div class="section-divider mt-10 w-32 mx-auto"></div>
+      </div>
+
+      {openPositions.length === 0 ? (
+        <div class="card-base p-12 text-center">
+          <div class="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center" style="background: var(--border-subtle);">
+            <svg class="w-8 h-8" style="color: var(--text-secondary);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <p class="text-lg font-semibold" style="color: var(--text-heading);">No formal postings at the moment</p>
+          <p class="mt-3 text-base max-w-xl mx-auto text-center" style="color: var(--text-secondary);">
+            We may still have opportunities for exceptional candidates. Reach out directly if you are interested
+            in joining us as a postdoc, PhD student, or research scientist.
+          </p>
+          <a
+            href="mailto:runxi@purdue.edu"
+            class="inline-flex items-center gap-2 mt-8 px-6 py-3 rounded-lg font-semibold text-base transition-colors"
+            style="background: color-mix(in srgb, var(--accent-gold) 15%, transparent); color: var(--accent-gold); border: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);"
+          >
+            Get in touch
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            </svg>
+          </a>
+        </div>
+      ) : (
+        <div class="space-y-6">
+          {openPositions.map(pos => (
+            <article class="card-base p-8">
+              <div class="flex items-start justify-between gap-4 flex-wrap">
+                <div>
+                  <h2 class="text-2xl font-semibold mb-2" style="color: var(--text-heading);">{pos.data.title}</h2>
+                  <span class="mono-label text-xs" style="font-size: 0.75rem;">{pos.data.type}</span>
+                </div>
+                <a
+                  href="mailto:runxi@purdue.edu"
+                  class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-colors flex-shrink-0"
+                  style="background: color-mix(in srgb, var(--accent-gold) 15%, transparent); color: var(--accent-gold); border: 1px solid color-mix(in srgb, var(--accent-gold) 30%, transparent);"
+                >
+                  Apply
+                </a>
+              </div>
+              <p class="mt-4 text-base leading-relaxed" style="color: var(--text-secondary);">{pos.data.description}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <!-- General info -->
+      <div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {[
+          { title: 'Postdocs', desc: 'We welcome applications from recent PhD graduates with strong computational or biological backgrounds.' },
+          { title: 'PhD Students', desc: 'Prospective PhD students should apply through the Purdue Biological Sciences or Computer Science graduate programs.' },
+          { title: 'Visiting Scientists', desc: 'Short-term visits for collaboration are possible. Please reach out to discuss your interests.' },
+        ].map(item => (
+          <div class="card-base p-6">
+            <h3 class="text-lg font-semibold mb-3" style="color: var(--accent-gold);">{item.title}</h3>
+            <p class="text-sm leading-relaxed" style="color: var(--text-secondary);">{item.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</PageLayout>

@@ -1,0 +1,124 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const blogPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = blogPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const base = import.meta.env.BASE_URL;
+
+const announcements = [
+  {
+    date: '2026-04-08',
+    category: 'Announcement',
+    title: 'Carpenter-Shen Lab launches at Purdue University',
+    excerpt: 'We are excited to announce the establishment of the Carpenter-Shen Lab at Purdue University, continuing our mission in computational image analysis for drug discovery.',
+    link: 'https://www.linkedin.com/posts/annecarpenter1_im-thrilled-to-announce-im-joining-purdue-activity-7447729701122547713-PNyx',
+  },
+];
+
+function formatDate(dateStr: string | Date): string {
+  const d = typeof dateStr === 'string' ? new Date(dateStr) : dateStr;
+  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+const categoryColors: Record<string, string> = {
+  announcement: 'var(--accent-gold)',
+  release: 'var(--accent-teal)',
+  'how-to': 'var(--accent-teal)',
+  career: 'var(--accent-gold)',
+  general: 'var(--text-secondary)',
+};
+---
+
+<PageLayout
+  title="News | Carpenter-Shen Lab"
+  description="News, announcements, and updates from the Carpenter-Shen Lab at Purdue University."
+>
+  <section class="py-28 px-4 sm:px-6 lg:px-8" style="background: var(--bg-content);">
+    <div class="max-w-5xl mx-auto">
+      <div class="text-center mb-16">
+        <span class="section-label">Stay Updated</span>
+        <h1 class="mt-6" style="color: var(--text-heading); font-size: clamp(3rem, 7vw, 6rem); font-weight: 900; letter-spacing: -0.03em;">
+          News
+        </h1>
+        <p class="mt-6 max-w-2xl mx-auto text-lg text-center" style="color: var(--text-secondary);">
+          Announcements, publications, and updates from our lab.
+        </p>
+        <div class="section-divider mt-10 w-32 mx-auto"></div>
+      </div>
+
+      <!-- Announcements -->
+      <div class="mb-16">
+        <h2 class="text-2xl font-bold mb-8 pb-3" style="color: var(--text-heading); border-bottom: 1px solid var(--border-subtle);">
+          Announcements
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {announcements.map(item => (
+            <article class="card-base flex flex-col p-8">
+              <div class="flex items-center gap-3 mb-4">
+                <span class="mono-label" style="font-size: 0.75rem;">{item.category}</span>
+                <span class="text-sm font-mono" style="color: var(--text-secondary);">
+                  {formatDate(item.date)}
+                </span>
+              </div>
+              <h3 class="text-lg font-semibold mb-3 leading-snug" style="color: var(--text-heading);">
+                {item.title}
+              </h3>
+              <p class="text-base leading-relaxed flex-1" style="color: var(--text-secondary);">
+                {item.excerpt}
+              </p>
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1.5 mt-5 text-base font-medium"
+                style="color: var(--accent-gold);"
+              >
+                Read more
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </article>
+          ))}
+        </div>
+      </div>
+
+      <!-- Blog posts -->
+      {posts.length > 0 && (
+        <div>
+          <h2 class="text-2xl font-bold mb-8 pb-3" style="color: var(--text-heading); border-bottom: 1px solid var(--border-subtle);">
+            Blog
+          </h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {posts.map(post => (
+              <article class="card-base flex flex-col p-8">
+                <div class="flex items-center gap-3 mb-4">
+                  <span
+                    class="mono-label"
+                    style={`font-size: 0.75rem; color: ${categoryColors[post.data.category] ?? 'var(--text-secondary)'};`}
+                  >
+                    {post.data.category}
+                  </span>
+                  <span class="text-sm font-mono" style="color: var(--text-secondary);">
+                    {formatDate(post.data.date)}
+                  </span>
+                </div>
+                <h3 class="text-lg font-semibold mb-3 leading-snug" style="color: var(--text-heading);">
+                  {post.data.title}
+                </h3>
+                <p class="text-base leading-relaxed flex-1" style="color: var(--text-secondary);">
+                  {post.data.excerpt}
+                </p>
+                <p class="mt-4 text-sm font-mono" style="color: var(--text-secondary);">
+                  By {post.data.author}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>
