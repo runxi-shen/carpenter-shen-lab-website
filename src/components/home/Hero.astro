@@ -17,7 +17,7 @@ const base = import.meta.env.BASE_URL;
     <!-- Mission visual box — bordered cream card, fully justified -->
     <div class="hero-card animate-fade-in">
       <h1 class="hero-headline">
-        Very few people get to <em>solve puzzles</em> all day long and <em>directly help patients</em> suffering from disease.
+        Very few people get to solve puzzles all day long and <strong class="hero-accent">directly help patients</strong> suffering from disease.
       </h1>
 
       <p class="hero-body">
@@ -32,16 +32,11 @@ const base = import.meta.env.BASE_URL;
       </p>
 
       <div class="hero-ctas">
-        <a href={`${base}/research/`} class="cta-primary">
+        <a href={`${base}/#research`} class="cta-primary">
           Explore Research
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
-        </a>
-        <a href="https://docs.google.com/document/d/1R5kSSUX4A3x0CZYsTUdUtxPJYHRwZ04SIl5G06_MrlQ/preview?tab=t.0"
-           target="_blank" rel="noopener noreferrer"
-           class="cta-secondary">
-          Join the Lab
         </a>
       </div>
     </div>
@@ -65,6 +60,7 @@ const base = import.meta.env.BASE_URL;
     border-radius: 4px;
     padding: clamp(1.75rem, 3.5vw, 2.75rem);
     box-shadow: 0 1px 2px rgba(26, 26, 26, 0.03), 0 12px 40px rgba(142, 111, 62, 0.08);
+    -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
     max-width: 720px;
   }
@@ -80,9 +76,9 @@ const base = import.meta.env.BASE_URL;
     text-justify: inter-word;
     margin: 0 0 1.5rem 0;
   }
-  .hero-headline em {
-    font-style: italic;
-    font-weight: 600;
+  .hero-headline .hero-accent {
+    font-style: normal;
+    font-weight: 700;
     color: var(--purdue-aged);
   }
 
