@@ -6,6 +6,11 @@ excerpt: "We are excited to announce the establishment of the Carpenter-Shen Lab
 category: "announcement"
 tags: ["lab-news", "purdue"]
 draft: false
+linkedin:
+  - name: Carpenter
+    url: "https://www.linkedin.com/posts/annecarpenter1_im-thrilled-to-announce-im-joining-purdue-activity-7447729701122547713-PNyx"
+  - name: Shen
+    url: "https://www.linkedin.com/posts/runxi-shen_im-thrilled-to-share-that-this-august-ill-activity-7447722418296659968-af5P"
 ---
 
 We are thrilled to announce the launch of the **Carpenter-Shen Lab** at Purdue University! Building on the foundation established at the Broad Institute, our lab will continue to push the boundaries of computational image analysis for drug discovery and functional genomics.

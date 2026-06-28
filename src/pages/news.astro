@@ -1,0 +1,103 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection, render } from 'astro:content';
+
+// Single source of truth: news comes from the blog content collection.
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Render each post body so full content is reachable on this page (no dead-end link).
+const rendered = await Promise.all(
+  posts.map(async (post) => ({ post, Content: (await render(post)).Content }))
+);
+
+// Format the YYYY-MM-DD date in UTC so it never shifts a day in non-UTC timezones.
+function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US', {
+    timeZone: 'UTC',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+---
+
+<PageLayout
+  title="News | Carpenter-Shen Lab"
+  description="Announcements, publications, and updates from the Carpenter-Shen Lab at Purdue University."
+>
+  <section class="py-28 px-4 sm:px-6 lg:px-8" style="background: var(--bg-content);">
+    <div class="max-w-4xl mx-auto">
+      <!-- Section header -->
+      <div class="text-center mb-20">
+        <span class="section-label">Stay Updated</span>
+        <h1 class="mt-6" style="color: var(--text-heading); font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 900; letter-spacing: -0.03em;">
+          News
+        </h1>
+        <p class="mt-6 max-w-3xl mx-auto text-lg text-center" style="color: var(--text-secondary);">
+          Announcements, publications, and updates from our lab.
+        </p>
+        <div class="section-divider mt-10 w-32 mx-auto"></div>
+      </div>
+
+      {rendered.length === 0 ? (
+        <p class="text-center text-lg" style="color: var(--text-secondary);">
+          No news yet. Check back soon.
+        </p>
+      ) : (
+        <div class="space-y-12">
+          {rendered.map(({ post, Content }) => (
+            <article class="card-base p-8 sm:p-10">
+              <div class="flex flex-wrap items-center gap-3 mb-4">
+                <span class="mono-label" style="font-size: 0.75rem;">{post.data.category}</span>
+                <span class="text-sm font-mono" style="color: var(--text-secondary);">
+                  {formatDate(post.data.date)}
+                </span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-semibold mb-4" style="color: var(--text-heading);">
+                {post.data.title}
+              </h2>
+              <div class="prose-news" style="color: var(--text-secondary);">
+                <Content />
+              </div>
+              {post.data.linkedin && post.data.linkedin.length > 0 && (
+                <p class="text-sm mt-6" style="color: var(--text-muted);">
+                  LinkedIn posts:
+                  {post.data.linkedin.map((li, i) => (
+                    <>
+                      {i > 0 && <span aria-hidden="true"> | </span>}
+                      <a href={li.url} target="_blank" rel="noopener noreferrer" class="linkedin-link">{li.name}</a>
+                    </>
+                  ))}
+                </p>
+              )}
+            </article>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>
+
+<style is:global>
+  .prose-news { line-height: 1.7; }
+  .prose-news p { margin: 0 0 1rem 0; }
+  .prose-news h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin: 1.75rem 0 0.75rem 0;
+  }
+  .prose-news a {
+    color: var(--text-link);
+    text-decoration: underline;
+  }
+  .prose-news strong { color: var(--text-heading); }
+  .linkedin-link {
+    color: var(--text-link);
+    font-weight: 600;
+    border-bottom: 1px solid var(--purdue-gold);
+    transition: border-color 0.18s ease;
+  }
+  .linkedin-link:hover { border-color: var(--purdue-aged); }
+</style>

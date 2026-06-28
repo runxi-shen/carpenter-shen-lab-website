@@ -61,6 +61,8 @@ const blog = defineCollection({
     tags: z.array(z.string()).default([]),
     image: z.string().optional(),
     draft: z.boolean().default(false),
+    // Optional source links for this specific post (e.g. the LinkedIn announcements behind it)
+    linkedin: z.array(z.object({ name: z.string(), url: z.string().url() })).optional(),
   }),
 });
 
@@ -74,26 +76,4 @@ const research = defineCollection({
   }),
 });
 
-const software = defineCollection({
-  type: 'content',
-  schema: z.object({
-    name: z.string(),
-    description: z.string(),
-    github: z.string().url().optional(),
-    docs: z.string().url().optional(),
-    featured: z.boolean().default(false),
-  }),
-});
-
-const positions = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    type: z.enum(['postdoc', 'phd', 'research-scientist', 'visiting', 'other']).default('other'),
-    description: z.string(),
-    open: z.boolean().default(true),
-    posted: z.date().optional(),
-  }),
-});
-
-export const collections = { team, papers, blog, research, software, positions };
+export const collections = { team, papers, blog, research };

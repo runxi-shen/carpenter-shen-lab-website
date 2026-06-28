@@ -21,3 +21,12 @@ node_modules/
 # OS
 .DS_Store
 Thumbs.db
+
+# stray reference screenshots / drop-zone uploads (kept local only)
+Screenshot*.png
+*.webp
+*.jpg
+!src/**/*.jpg
+!src/**/*.webp
+!public/**/*.jpg
+!public/**/*.webp

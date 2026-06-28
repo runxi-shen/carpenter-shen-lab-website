@@ -1,67 +1,96 @@
 /* ─── Google Fonts Import (must be first) ──────────────────────────── */
 /* Purdue-aligned free alternatives:
-   Barlow        → replaces Acumin Pro (headlines, UI text)
-   Barlow Condensed → replaces United Sans (callouts, labels, badges)
-   Source Serif 4   → matches Source Serif Pro (body text)              */
-@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;900&family=Barlow+Condensed:wght@400;500;600;700&family=Source+Serif+4:wght@400;600;700&display=swap');
+   Source Serif 4    → official Purdue serif (hero display + body)
+   Barlow            → replaces Acumin Pro (nav, UI)
+   Barlow Condensed  → replaces United Sans (wordmark, labels, eyebrows)   */
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700;800&family=Barlow+Condensed:wght@500;600;700;800&family=Barlow+Semi+Condensed:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ═══════════════════════════════════════════════════════════════════
-   SINGLE THEME — Modern Purdue-branded, high-contrast
-   Dark hero/nav/footer + clean white content sections
+   LIGHT PURDUE THEME — warm cream surface, editorial serif display
+   Bright, sophisticated, brand-compliant.
    ═══════════════════════════════════════════════════════════════════ */
 
 :root {
-  /* ─── Core backgrounds ─── */
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F5F5F0;
+  /* ─── Surface system ─── */
+  --bg-page: #FAF7EF;          /* warm cream — tinted toward Boilermaker Gold */
+  --bg-page-alt: #F2EDDF;      /* slightly deeper cream — Dust-adjacent */
   --bg-card: #FFFFFF;
-  --bg-content: #FFFFFF;
+  --bg-elevated: #FFFFFF;
 
-  /* ─── Dark surfaces (hero, nav, footer) ─── */
-  --bg-dark: #111111;
-  --bg-dark-secondary: #1A1A1A;
+  /* legacy aliases kept so other components don't break before they're refactored */
+  --bg-primary: var(--bg-page);
+  --bg-secondary: var(--bg-page-alt);
+  --bg-content: var(--bg-page);
+  --bg-dark: #1A1A1A;           /* used only by Footer */
+  --bg-dark-secondary: #222222;
 
   /* ─── Text ─── */
   --text-primary: #1A1A1A;
-  --text-secondary: #555555;
-  --text-heading: #000000;
-  --text-on-dark: #F5F5F0;
-  --text-on-dark-secondary: #AAAAAA;
-  --text-on-accent: #111111;
+  --text-secondary: #555960;    /* Purdue Steel */
+  --text-muted: #6F727B;        /* Purdue Cool Gray */
+  --text-heading: #0A0A0A;
+  --text-on-dark: #F5F1E6;
+  --text-on-dark-secondary: #A8A29A;
+  --text-on-accent: #1A1A1A;
+  --text-link: #8E6F3E;         /* Aged — AA-safe on cream */
 
-  /* ─── Purdue brand accents ─── */
-  --accent-gold: #CFB991;           /* Boilermaker Gold */
-  --accent-gold-bright: #DAAA00;    /* Rush Gold — vibrant highlights */
-  --accent-gold-dim: #8E6F3E;       /* Aged Gold — subtle accents */
-  /* ─── Secondary accent: a modern teal for tech energy ─── */
-  --accent-teal: #0D9488;
-  --accent-teal-light: #14B8A6;
+  /* ─── Purdue palette tokens ─── */
+  --purdue-gold:        #CFB991;   /* Boilermaker Gold */
+  --purdue-aged:        #8E6F3E;
+  --purdue-rush:        #DAAA00;
+  --purdue-field:       #DDB945;
+  --purdue-dust:        #EBD99F;
+  --purdue-steel:       #555960;
+  --purdue-cool-gray:   #6F727B;
+  --purdue-railway:     #9D9795;
+  --purdue-steam:       #C4BFC0;
+
+  /* legacy accent aliases */
+  --accent-gold:        var(--purdue-gold);
+  --accent-gold-bright: var(--purdue-rush);
+  --accent-gold-dim:    var(--purdue-aged);
+  /* deprecated teal accents now map to Purdue palette so legacy refs stay brand-safe */
+  --accent-teal:        var(--purdue-rush);
+  --accent-teal-light:  var(--purdue-field);
 
   /* ─── Borders ─── */
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-card: rgba(0, 0, 0, 0.06);
-  --border-dark: rgba(207, 185, 145, 0.15);
+  --border-subtle: rgba(26, 26, 26, 0.08);
+  --border-card:   rgba(26, 26, 26, 0.06);
+  --border-strong: rgba(142, 111, 62, 0.35);
+  --border-dark:   rgba(207, 185, 145, 0.15);
 
   /* ─── Navigation ─── */
-  --nav-bg: rgba(17, 17, 17, 0.95);
-  --nav-text: #F5F5F0;
+  --nav-bg: rgba(250, 247, 239, 0.85);  /* translucent cream */
+  --nav-text: #1A1A1A;
+  --nav-border: rgba(142, 111, 62, 0.18);
 
-  /* ─── Footer ─── */
-  --footer-bg: #111111;
-  --footer-text: #999999;
+  /* ─── Footer (kept dark for hierarchy contrast) ─── */
+  --footer-bg: #1A1A1A;
+  --footer-text: #A8A29A;
 
-  /* ─── Gradients ─── */
-  --hero-gradient: linear-gradient(135deg, #111111 0%, #1A1A1A 100%);
-  --section-gradient: linear-gradient(180deg, #FFFFFF 0%, #F5F5F0 100%);
+  /* ─── Hero atmosphere ─── */
+  --hero-bg: var(--bg-page);
+  --hero-wash: radial-gradient(
+    1200px 700px at 80% 30%,
+    rgba(207, 185, 145, 0.28) 0%,
+    rgba(235, 217, 159, 0.10) 40%,
+    transparent 70%
+  );
 
-  /* ─── Font families (CSS vars for easy component override) ─── */
-  --font-heading: 'Barlow', system-ui, sans-serif;
-  --font-display: 'Barlow Condensed', 'Franklin Gothic Medium', sans-serif;
-  --font-body: 'Source Serif 4', Georgia, serif;
+  /* ─── Section gradients (light) ─── */
+  --section-gradient: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-page-alt) 100%);
+  --hero-gradient: linear-gradient(180deg, var(--bg-page) 0%, var(--bg-page) 100%);
+
+  /* ─── Font families ─── */
+  --font-display:    'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --font-heading:    'Barlow', 'Acumin Pro', system-ui, sans-serif;
+  --font-body:       'Source Serif 4', 'Source Serif Pro', Georgia, serif;
+  --font-label:      'Barlow Condensed', 'United Sans', Impact, sans-serif;
+  --font-condensed:  'Barlow Semi Condensed', 'Acumin Pro SemiCondensed', system-ui, sans-serif;
 }
 
 
@@ -77,23 +106,24 @@
   }
 
   body {
-    font-family: var(--font-heading);
-    background-color: var(--bg-primary);
+    font-family: var(--font-body);
+    background-color: var(--bg-page);
     color: var(--text-primary);
-    line-height: 1.7;
+    line-height: 1.65;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
+    font-family: var(--font-display);
     color: var(--text-heading);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
   }
 
-  h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
-  h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); }
-  h3 { font-size: clamp(1.3rem, 2.5vw, 1.8rem); }
+  /* Editorial display headline — serif italic-aware */
+  h1 { font-size: clamp(2.75rem, 6vw, 5.25rem); }
+  h2 { font-size: clamp(2rem, 4vw, 3.25rem); }
+  h3 { font-size: clamp(1.4rem, 2.5vw, 1.9rem); }
 
   p {
     font-family: var(--font-body);
@@ -103,17 +133,17 @@
   }
 
   a {
-    color: var(--accent-gold-dim);
+    color: var(--text-link);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   a:hover {
-    color: var(--accent-gold-bright);
+    color: var(--purdue-rush);
   }
 
   ::selection {
-    background-color: var(--accent-gold);
+    background-color: var(--purdue-gold);
     color: var(--text-on-accent);
   }
 }
@@ -123,21 +153,6 @@
    ═══════════════════════════════════════════════════════════════════ */
 
 @layer components {
-  .gold-underline {
-    position: relative;
-    display: inline-block;
-  }
-
-  .gold-underline::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
-    border-radius: 2px;
-  }
 
   .card-base {
     background: var(--bg-card);
@@ -145,12 +160,12 @@
     border-radius: 12px;
     padding: 1.5rem;
     transition: all 0.3s ease;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.04);
   }
 
   .card-base:hover {
-    border-color: var(--accent-gold);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--accent-gold);
+    border-color: var(--purdue-gold);
+    box-shadow: 0 4px 24px rgba(142, 111, 62, 0.10), 0 0 0 1px var(--purdue-gold);
     transform: translateY(-2px);
   }
 
@@ -159,34 +174,34 @@
     background: linear-gradient(
       90deg,
       transparent,
-      var(--accent-gold),
+      var(--purdue-gold),
       transparent
     );
     margin: 0 auto;
     max-width: 80%;
   }
 
-  /* Condensed label — replaces JetBrains Mono with Barlow Condensed (United Sans stand-in) */
+  /* Compact label — Barlow Condensed in Aged Gold */
   .mono-label {
-    font-family: var(--font-display);
-    font-size: 0.8rem;
+    font-family: var(--font-label);
+    font-size: 0.85rem;
     font-weight: 600;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--accent-gold-dim);
+    color: var(--purdue-aged);
   }
 
-  /* Section label — prominent, readable, used above section headings */
+  /* Section label — eyebrow flanked by rules */
   .section-label {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-family: var(--font-display);
-    font-size: 1rem;
+    gap: 0.65rem;
+    font-family: var(--font-label);
+    font-size: 0.95rem;
     font-weight: 600;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--accent-gold-dim);
+    color: var(--purdue-aged);
   }
 
   .section-label::before,
@@ -195,40 +210,41 @@
     display: inline-block;
     width: 2rem;
     height: 2px;
-    background: var(--accent-gold);
+    background: var(--purdue-gold);
     border-radius: 1px;
   }
 
-  /* Animated dot grid for hero backgrounds */
-  .dot-grid {
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(
-      circle,
-      rgba(207, 185, 145, 0.3) 1px,
-      transparent 1px
-    );
-    background-size: 40px 40px;
-    opacity: 0.15;
-    pointer-events: none;
+  /* CTA — primary */
+  .cta-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.95rem 1.75rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    background: var(--purdue-aged);
+    color: #FFFFFF;
+    border-radius: 0;
+    transition: all 0.25s ease;
   }
 
-  /* Gradient text */
-  .gradient-text {
-    background: linear-gradient(135deg, var(--accent-gold-bright), var(--accent-teal-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  .cta-primary:hover {
+    background: #75592F;
+    color: #FFFFFF;
+    transform: translateY(-1px);
   }
 
-  /* Gold highlight text on dark backgrounds */
-  .text-gold {
-    color: var(--accent-gold);
+  /* Inline emphasis on body text */
+  .text-accent {
+    color: var(--purdue-aged);
+    font-weight: 600;
   }
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TRANSITIONS — smooth interactions
+   TRANSITIONS
    ═══════════════════════════════════════════════════════════════════ */
 
 .no-transitions *, .no-transitions *::before, .no-transitions *::after {

@@ -7,28 +7,25 @@ const highlights = [
   {
     title: 'Predicting Chemical Safety',
     description: 'Combining cellular imaging, transcriptomics, and proteomics across a global network of scientists to build predictive tools that reduce animal testing and bring safer medicines to people faster.',
-    icon: null,
-    emoji: '\u{1F9EC}',
-    accent: 'var(--accent-teal)',
+    emoji: '\u{1F489}',
+    accent: 'var(--purdue-gold)',
   },
   {
     title: 'Rescuing Mislocalized Proteins',
     description: 'Systematically screening thousands of approved drugs to find ones that can rescue diseases caused when critical proteins end up in the wrong place inside a cell, turning known medicines into new cures.',
-    icon: null,
-    emoji: '\u{1F489}',
-    accent: 'var(--accent-gold)',
+    emoji: '\u{1F9EC}',
+    accent: 'var(--purdue-rush)',
   },
   {
     title: 'Mapping the Chemical Universe',
     description: 'Creating the world\'s largest open library of how cells respond to over 136,000 drugs and genetic changes, giving AI the training data it needs to accelerate the discovery of new medicines for any disease.',
-    icon: null,
     emoji: '\u{1F52C}',
-    accent: 'var(--accent-teal)',
+    accent: 'var(--purdue-aged)',
   },
 ];
 ---
 
-<section class="py-28 px-4 sm:px-6 lg:px-8" style="background: var(--bg-content);">
+<section id="research" class="py-28 px-4 sm:px-6 lg:px-8 scroll-mt-24" style="background: var(--bg-content);">
   <div class="max-w-7xl mx-auto">
     <!-- Section header -->
     <div class="text-center mb-16">
@@ -98,11 +95,7 @@ const highlights = [
           <!-- Top accent line -->
           <div class="absolute top-0 left-0 right-0 h-1 rounded-t-xl" style={`background: ${item.accent};`}></div>
 
-          {item.icon ? (
-            <img src={item.icon} alt={item.title} class="w-14 h-14 mb-6 rounded-lg object-contain" />
-          ) : (
-            <div class="text-5xl mb-6">{item.emoji}</div>
-          )}
+          <div class="text-5xl mb-6">{item.emoji}</div>
           <h3 class="text-2xl font-semibold mb-4" style="color: var(--text-heading);">
             {item.title}
           </h3>
@@ -111,7 +104,7 @@ const highlights = [
           </p>
 
           <!-- Learn more link -->
-          <a href={`${base}/research/`}
+          <a href={`${base}/#research`}
              class="inline-flex items-center gap-2 text-base font-semibold transition-colors"
              style={`color: ${item.accent};`}>
             Learn more

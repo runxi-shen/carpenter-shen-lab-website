@@ -5,15 +5,11 @@ import mdx from '@astrojs/mdx';
 // https://astro.build/config
 export default defineConfig({
   // ─── Hosting Configuration ───────────────────────────────────────────
-  // For GitHub Pages (runxi-shen.github.io/carpenter-shen-lab):
+  // GitHub Pages at https://runxi-shen.github.io/carpenter-shen-lab-website/
+  // `base` MUST be the exact GitHub repo name (carpenter-shen-lab-website)
+  // or every asset in production will 404 while local dev still works.
   site: 'https://runxi-shen.github.io',
-  base: '/carpenter-shen-lab',
-  //
-  // For a custom Purdue domain, replace the above two lines with:
-  //   site: 'https://carpenter-shen-lab.purdue.edu',
-  //   base: '/',
-  //
-  // You can also add a CNAME file in public/ for custom domain setup.
+  base: '/carpenter-shen-lab-website',
   // ─────────────────────────────────────────────────────────────────────
 
   output: 'static',

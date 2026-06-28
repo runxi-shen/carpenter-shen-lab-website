@@ -1,5 +1,5 @@
 ---
-import purdueLogo from '../../assets/images/icons/purdue-logo.svg';
+import purdueLogo from '../../assets/images/icons/PU-H-Full-Rev-RGB.svg';
 
 const base = import.meta.env.BASE_URL;
 const year = new Date().getFullYear();
@@ -10,7 +10,7 @@ const year = new Date().getFullYear();
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
       <!-- Purdue Logo — bottom left -->
       <div class="flex flex-col items-start justify-start">
-        <a href="https://www.purdue.edu" target="_blank" rel="noopener noreferrer" class="mb-4 opacity-90 hover:opacity-100 transition-opacity inline-block rounded-md px-3 py-2" style="background: #FFFFFF;">
+        <a href="https://www.purdue.edu" target="_blank" rel="noopener noreferrer" class="mb-4 opacity-90 hover:opacity-100 transition-opacity inline-block">
           <img src={purdueLogo.src} alt="Purdue University" class="h-10 w-auto" />
         </a>
         <p class="text-sm font-body leading-relaxed" style="color: var(--footer-text);">
@@ -23,12 +23,17 @@ const year = new Date().getFullYear();
       <div>
         <h4 class="mono-label mb-4">Navigate</h4>
         <ul class="space-y-2">
-          {['Research', 'People', 'Papers', 'Software'].map(label => (
+          {[
+            { label: 'Research', href: `${base}/#research` },
+            { label: 'People',   href: `${base}/people/` },
+            { label: 'Papers',   href: `${base}/papers/` },
+            { label: 'News',     href: `${base}/news/` },
+          ].map(link => (
             <li>
-              <a href={`${base}/${label.toLowerCase()}/`}
+              <a href={link.href}
                  class="text-sm transition-colors hover:text-[var(--accent-gold)]"
                  style="color: var(--footer-text);">
-                {label}
+                {link.label}
               </a>
             </li>
           ))}
