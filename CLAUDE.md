@@ -50,8 +50,8 @@ src/
 - Section subtitles under headers should be `text-center` (override the global justify)
 
 ### Hosting
-- Currently configured for GitHub Pages at `runxi-shen.github.io/carpenter-shen-lab`
-- To switch to a Purdue domain: change `site` and `base` in `astro.config.mjs`
+- Currently configured for GitHub Pages at `runxi-shen.github.io/carpenter-shen-lab-website` (`base: '/carpenter-shen-lab-website'` in `astro.config.mjs` — must match the exact GitHub repo name `runxi-shen/carpenter-shen-lab-website`, otherwise every asset 404s in production)
+- To switch to a Purdue domain: set `site: 'https://carpenter-shen-lab.purdue.edu'`, `base: '/'`, and add a `CNAME` file in `public/`
 - GitHub Actions deploy workflow in `.github/workflows/deploy.yml`
 
 ## Content
