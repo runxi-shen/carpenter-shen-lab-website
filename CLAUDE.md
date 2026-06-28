@@ -39,8 +39,9 @@ src/
 - All colors use CSS custom properties in `src/assets/styles/global.css`.
 - **Dark surfaces** (hero, nav, footer): near-black (#111111) with Boilermaker Gold (#CFB991) accents
 - **Content areas**: white backgrounds, dark text, Aged Gold (#8E6F3E) accents
-- **Secondary accent**: teal (#0D9488) for tech energy
+- **Secondary accent**: teal (#0D9488) for tech energy — *not in the Purdue palette; pending Marcom decision (see [`.agents/skills/purdue-brand/reference/color.md`](.agents/skills/purdue-brand/reference/color.md))*
 - Purdue brand reference: https://marcom.purdue.edu/our-brand/visual-identity/
+- **Authoritative brand rules for this repo** live in [`.agents/skills/purdue-brand/`](.agents/skills/purdue-brand/) (palette, typography, logo, voice, checklist).
 
 ### Typography (Purdue-aligned free alternatives)
 - Headings/UI: Barlow (sans-serif) — replaces Acumin Pro
@@ -64,6 +65,24 @@ src/
 - No em dashes in body text. Use commas or restructure sentences instead.
 - Body paragraphs are justified (both-side aligned).
 - Section headers use the `.section-label` class (monospace, gold, flanked by decorative lines).
+
+## Design workflow
+
+Two skills cover frontend design on this repo. Use them together:
+
+- **[purdue-brand](.agents/skills/purdue-brand/SKILL.md)** — encodes Purdue Marcom rules (palette, type, logo, voice, 77° diagonals). Loads first so brand constraints are in scope.
+- **[impeccable](.agents/skills/impeccable/SKILL.md)** — design quality, composition, motion, audit. Reads `PRODUCT.md` + `DESIGN.md` at the repo root, which are already seeded with the Purdue rules.
+
+Typical sequence for a visual change:
+
+```
+/purdue-brand audit            # baseline compliance check
+/impeccable shape <surface>     # plan the design within brand constraints
+/impeccable craft <surface>     # implement
+/purdue-brand audit            # confirm no regressions
+```
+
+When brand and impeccable conflict (e.g. impeccable's "use OKLCH, never `#000`" vs Purdue's required exact hex values), **brand wins** for identity (colors, fonts, logo), impeccable wins for everything else (hierarchy, motion, spacing, contrast strategy).
 
 ## Development
 
