@@ -2,9 +2,6 @@
 import PageLayout from '../layouts/PageLayout.astro';
 import { getCollection, render } from 'astro:content';
 
-const LINKEDIN_CARPENTER = 'https://www.linkedin.com/posts/annecarpenter1_im-thrilled-to-announce-im-joining-purdue-activity-7447729701122547713-PNyx';
-const LINKEDIN_SHEN = 'https://www.linkedin.com/posts/runxi-shen_im-thrilled-to-share-that-this-august-ill-activity-7447722418296659968-af5P';
-
 // Single source of truth: news comes from the blog content collection.
 const posts = (await getCollection('blog', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -63,12 +60,17 @@ function formatDate(date: Date): string {
               <div class="prose-news" style="color: var(--text-secondary);">
                 <Content />
               </div>
-              <p class="text-sm mt-6" style="color: var(--text-muted);">
-                LinkedIn posts:
-                <a href={LINKEDIN_CARPENTER} target="_blank" rel="noopener noreferrer" class="linkedin-link">Carpenter</a>
-                <span aria-hidden="true">|</span>
-                <a href={LINKEDIN_SHEN} target="_blank" rel="noopener noreferrer" class="linkedin-link">Shen</a>
-              </p>
+              {post.data.linkedin && post.data.linkedin.length > 0 && (
+                <p class="text-sm mt-6" style="color: var(--text-muted);">
+                  LinkedIn posts:
+                  {post.data.linkedin.map((li, i) => (
+                    <>
+                      {i > 0 && <span aria-hidden="true"> | </span>}
+                      <a href={li.url} target="_blank" rel="noopener noreferrer" class="linkedin-link">{li.name}</a>
+                    </>
+                  ))}
+                </p>
+              )}
             </article>
           ))}
         </div>
