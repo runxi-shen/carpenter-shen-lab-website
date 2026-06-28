@@ -154,30 +154,6 @@
 
 @layer components {
 
-  /* Editorial display — used for the hero headline */
-  .display-serif {
-    font-family: var(--font-display);
-    font-weight: 600;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    color: var(--text-heading);
-  }
-
-  .display-serif em,
-  .display-serif .italic {
-    font-style: italic;
-    color: var(--purdue-aged);
-    font-weight: 600;
-  }
-
-  .gold-rule {
-    display: block;
-    width: 4.5rem;
-    height: 3px;
-    background: linear-gradient(90deg, var(--purdue-rush), var(--purdue-gold));
-    border-radius: 2px;
-  }
-
   .card-base {
     background: var(--bg-card);
     border: 1px solid var(--border-card);
@@ -258,27 +234,6 @@
     background: #75592F;
     color: #FFFFFF;
     transform: translateY(-1px);
-  }
-
-  /* CTA — secondary (ghost) */
-  .cta-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.95rem 1.75rem;
-    font-family: var(--font-heading);
-    font-weight: 600;
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-    color: var(--text-heading);
-    border: 1.5px solid var(--text-heading);
-    border-radius: 999px;
-    transition: all 0.25s ease;
-  }
-
-  .cta-secondary:hover {
-    background: var(--text-heading);
-    color: var(--bg-page);
   }
 
   /* Inline emphasis on body text */
