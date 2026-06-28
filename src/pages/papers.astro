@@ -1,0 +1,143 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+
+const CARPENTER_SCHOLAR = 'https://scholar.google.com/citations?user=pj6Bz0gAAAAJ&hl=en';
+const SHEN_SCHOLAR = 'https://scholar.google.com/citations?user=L9f8qagAAAAJ&hl=en';
+
+const papers = (await getCollection('papers')).sort((a, b) => b.data.year - a.data.year);
+
+// Group by year (descending) for a classic publication list.
+const byYear = new Map<number, typeof papers>();
+for (const paper of papers) {
+  const list = byYear.get(paper.data.year) ?? [];
+  list.push(paper);
+  byYear.set(paper.data.year, list);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+
+function isLabAuthor(author: string, labAuthors: string[]): boolean {
+  return labAuthors.some((a) => a.toLowerCase() === author.toLowerCase());
+}
+---
+
+<PageLayout
+  title="Papers | Carpenter-Shen Lab"
+  description="Publications from the Carpenter-Shen Lab at Purdue University."
+>
+  <section class="py-28 px-4 sm:px-6 lg:px-8" style="background: var(--bg-content);">
+    <div class="max-w-4xl mx-auto">
+      <!-- Section header -->
+      <div class="text-center mb-16">
+        <span class="section-label">Our Work</span>
+        <h1 class="mt-6" style="color: var(--text-heading); font-size: clamp(3.5rem, 8vw, 7rem); font-weight: 900; letter-spacing: -0.03em;">
+          Papers
+        </h1>
+        <p class="mt-6 max-w-3xl mx-auto text-lg text-center" style="color: var(--text-secondary);">
+          Selected publications from our lab members. For the complete and most current list, see Google Scholar.
+        </p>
+        <p class="scholar-pages mt-8">
+          Our Google Scholar pages (with citation metrics):
+          <a href={CARPENTER_SCHOLAR} target="_blank" rel="noopener noreferrer">Carpenter</a>
+          <span class="sep" aria-hidden="true">|</span>
+          <a href={SHEN_SCHOLAR} target="_blank" rel="noopener noreferrer">Shen</a>
+        </p>
+        <div class="section-divider mt-10 w-32 mx-auto"></div>
+      </div>
+
+      {papers.length === 0 ? (
+        <p class="text-center text-lg" style="color: var(--text-secondary);">
+          Publications are being added. In the meantime, see our Google Scholar pages:
+          <a href={CARPENTER_SCHOLAR} target="_blank" rel="noopener noreferrer" style="color: var(--text-link); text-decoration: underline;">Carpenter</a> |
+          <a href={SHEN_SCHOLAR} target="_blank" rel="noopener noreferrer" style="color: var(--text-link); text-decoration: underline;">Shen</a>.
+        </p>
+      ) : (
+        <div class="space-y-16">
+          {years.map((year) => (
+            <div>
+              <h2 class="year-heading">{year}</h2>
+              <ul class="space-y-8">
+                {byYear.get(year)!.map((paper) => (
+                  <li class="paper-entry">
+                    <p class="paper-authors">
+                      {paper.data.authors.map((author, i) => (
+                        <span>{i > 0 ? ', ' : ''}<span style={isLabAuthor(author, paper.data.labAuthors) ? 'font-weight: 700; color: var(--text-heading);' : ''}>{author}</span></span>
+                      ))}
+                    </p>
+                    <p class="paper-title">{paper.data.title}</p>
+                    <p class="paper-venue">
+                      <em>{paper.data.journal}</em>{paper.data.volume ? `, ${paper.data.volume}` : ''}{paper.data.pages ? `, ${paper.data.pages}` : ''} ({paper.data.year}).
+                    </p>
+                    <div class="paper-links">
+                      {paper.data.doi && (
+                        <a href={`https://doi.org/${paper.data.doi}`} target="_blank" rel="noopener noreferrer">DOI</a>
+                      )}
+                      {paper.data.pmid && (
+                        <a href={`https://pubmed.ncbi.nlm.nih.gov/${paper.data.pmid}/`} target="_blank" rel="noopener noreferrer">PubMed</a>
+                      )}
+                      {paper.data.pdf && (
+                        <a href={paper.data.pdf} target="_blank" rel="noopener noreferrer">PDF</a>
+                      )}
+                      {paper.data.github && (
+                        <a href={paper.data.github} target="_blank" rel="noopener noreferrer">Code</a>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .scholar-pages {
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 1rem;
+  }
+  .scholar-pages a {
+    font-weight: 700;
+    color: var(--text-link);
+    border-bottom: 2px solid var(--purdue-gold);
+    padding-bottom: 0.1rem;
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+  .scholar-pages a:hover {
+    color: var(--purdue-aged);
+    border-color: var(--purdue-aged);
+  }
+  .scholar-pages .sep {
+    margin: 0 0.5rem;
+    color: var(--text-muted);
+  }
+  .year-heading {
+    font-family: var(--font-label, 'Barlow Condensed', sans-serif);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--purdue-aged);
+    letter-spacing: 0.02em;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-strong);
+  }
+  .paper-entry { line-height: 1.55; }
+  .paper-authors { color: var(--text-secondary); font-size: 0.98rem; margin: 0 0 0.15rem 0; }
+  .paper-title { color: var(--text-heading); font-weight: 600; font-size: 1.1rem; margin: 0 0 0.15rem 0; }
+  .paper-venue { color: var(--text-secondary); font-size: 0.95rem; margin: 0 0 0.5rem 0; }
+  .paper-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .paper-links a {
+    font-family: var(--font-label, 'Barlow', sans-serif);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--purdue-aged);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.18s ease;
+  }
+  .paper-links a:hover { border-color: var(--purdue-aged); }
+</style>
