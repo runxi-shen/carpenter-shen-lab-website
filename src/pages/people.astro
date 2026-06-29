@@ -1,74 +1,9 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
-import SocialLinks from '../components/team/SocialLinks.astro';
-import annePhoto from '../assets/images/team/Anne_Carpenter_resized.png';
-import runxiPhoto from '../assets/images/team/Runxi_Shen_resized.jpg';
-import alanPhoto from '../assets/images/team/alan_munoz_resized.jpg';
-import johanPhoto from '../assets/images/team/johan_fredin_haslum_resized.jpg';
-import kazumasaPhoto from '../assets/images/team/kazumasa_shimofuruta_resized.jpg';
+import TeamCard from '../components/team/TeamCard.astro';
+import { getTeamGrouped } from '../lib/team';
 
-const teamMembers = [
-  {
-    name: 'Anne E. Carpenter',
-    role: 'Principal Investigator',
-    title: 'Professor, Biological Sciences and Computer Science',
-    photo: annePhoto.src,
-    accentColor: 'var(--purdue-aged)',
-    accentDim: 'var(--purdue-aged)',
-    bio: 'Leading the JUMP, OASIS, and VISTA consortia and the Cells to Cures Engine at Purdue University, coordinating large-scale collaborative research efforts across institutions and industry partners to harness image-based profiling for accelerating drug discovery.',
-    links: {
-      linkedin: 'https://www.linkedin.com/in/annecarpenter1/',
-      github: 'https://github.com/AnneCarpenter',
-      x: 'https://x.com/DrAnneCarpenter',
-      cv: 'https://docs.google.com/document/d/1Mh9RGJS-JePq72bgFhmXxKR4GJhQutiUC-K6GPB_clM/preview?tab=t.0#heading=h.tgyhy1etikw1',
-    },
-  },
-  {
-    name: 'Runxi Shen',
-    role: 'Co-Principal Investigator',
-    title: 'Research Assistant Professor, Biological Sciences',
-    photo: runxiPhoto.src,
-    accentColor: 'var(--purdue-aged)',
-    accentDim: 'var(--purdue-aged)',
-    bio: 'Developing computational methods for extracting meaningful features from cell images and multi-omics datasets, and applying them to biological discoveries, spanning representation learning, deep learning, and large-scale morphological profiling.',
-    links: {
-      linkedin: 'https://www.linkedin.com/in/runxi-shen/',
-      github: 'https://github.com/runxi-shen',
-      x: 'https://x.com/wshenrx',
-      cv: 'https://runxi-shen.github.io/cv/',
-    },
-  },
-];
-
-const labMembers = [
-  {
-    name: 'Alán Fernando Muñoz González',
-    role: 'Research Scientist',
-    title: '',
-    photo: alanPhoto.src,
-    accentColor: 'var(--purdue-aged)',
-    accentDim: 'var(--purdue-aged)',
-    bio: 'My interests lie in the interface of computer science, math, image analysis, and biology. I aim to develop tools and workflows to process high throughput imaging datasets, with special interest on applying computational methods on live microscopy data. I am also keen on extracting biological insights from high content microscopy, even when using deep learning tools.',
-  },
-  {
-    name: 'Johan Fredin Haslum',
-    role: 'Postdoctoral Fellow',
-    title: '',
-    photo: johanPhoto.src,
-    accentColor: 'var(--purdue-aged)',
-    accentDim: 'var(--purdue-aged)',
-    bio: 'I am interested in applying and developing machine learning methods for analyzing and representing the rich information captured in high throughput imaging datasets.',
-  },
-  {
-    name: 'Kazumasa Shimofuruta',
-    role: 'Visiting Scientist',
-    title: 'ONO Pharma',
-    photo: kazumasaPhoto.src,
-    accentColor: 'var(--purdue-aged)',
-    accentDim: 'var(--purdue-aged)',
-    bio: 'My interest is in identifying drug discovery targets by combining various omics technologies, including imaging, with AI. I am in charge of analysis for the VISTA Consortium, exploring approaches to rare diseases using image analysis.',
-  },
-];
+const { leads, researchers } = await getTeamGrouped();
 ---
 
 <PageLayout
@@ -92,35 +27,7 @@ const labMembers = [
 
       <!-- PI Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-        {teamMembers.map(member => (
-          <div class="card-base text-center group p-10 flex flex-col">
-            <div class="pb-8">
-              <img
-                src={member.photo}
-                alt={member.name}
-                class="w-40 h-40 rounded-full mx-auto mb-6 object-cover"
-                style={`border: 3px solid ${member.accentDim};`}
-              />
-
-              <h3 class="text-2xl font-semibold mb-2" style="color: var(--text-heading);">{member.name}</h3>
-
-              <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
-                    style={`background: color-mix(in srgb, ${member.accentColor} 12%, transparent); color: ${member.accentColor};`}>
-                {member.role}
-              </span>
-
-              <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style="color: var(--text-secondary); font-size: 0.95rem;">
-                {member.title}
-              </p>
-
-              <p class="text-base leading-relaxed" style="color: var(--text-secondary);">
-                {member.bio}
-              </p>
-            </div>
-
-            <SocialLinks links={member.links} />
-          </div>
-        ))}
+        {leads.map(member => <TeamCard member={member} variant="lead" />)}
       </div>
 
       <!-- Lab Members -->
@@ -132,37 +39,7 @@ const labMembers = [
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
-        {labMembers.map(member => (
-          <div class="card-base text-center group p-8 flex flex-col">
-            <div class="pb-8">
-              <img
-                src={member.photo}
-                alt={member.name}
-                class="w-32 h-32 rounded-full mx-auto mb-6 object-cover"
-                style={`border: 3px solid ${member.accentDim};`}
-              />
-
-              <h3 class="text-xl font-semibold mb-2" style="color: var(--text-heading);">{member.name}</h3>
-
-              <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
-                    style={`background: color-mix(in srgb, ${member.accentColor} 12%, transparent); color: ${member.accentColor};`}>
-                {member.role}
-              </span>
-
-              {member.title && (
-                <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style="color: var(--text-secondary); font-size: 0.9rem;">
-                  {member.title}
-                </p>
-              )}
-
-              <p class="text-base leading-relaxed mt-5" style="color: var(--text-secondary);">
-                {member.bio}
-              </p>
-            </div>
-
-            <SocialLinks links={member.links} />
-          </div>
-        ))}
+        {researchers.map(member => <TeamCard member={member} variant="member" />)}
       </div>
     </div>
   </section>

@@ -1,0 +1,50 @@
+---
+import SocialLinks from './SocialLinks.astro';
+import type { TeamCardMember } from '../../lib/team';
+
+interface Props {
+  member: TeamCardMember;
+  // 'lead' = larger PI cards; 'member' = smaller researcher cards.
+  variant?: 'lead' | 'member';
+  showLinks?: boolean;
+}
+
+const { member, variant = 'member', showLinks = true } = Astro.props;
+const accent = 'var(--purdue-aged)';
+
+const isLead = variant === 'lead';
+const padClass = isLead ? 'p-10' : 'p-8';
+const photoClass = isLead ? 'w-40 h-40' : 'w-32 h-32';
+const nameClass = isLead ? 'text-2xl' : 'text-xl';
+const titleSize = isLead ? '0.95rem' : '0.9rem';
+---
+
+<div class={`card-base text-center group ${padClass} flex flex-col`}>
+  <div class="pb-8">
+    <img
+      src={member.photoSrc}
+      alt={member.name}
+      class={`${photoClass} rounded-full mx-auto mb-6 object-cover`}
+      style={`border: 3px solid ${accent};`}
+    />
+
+    <h3 class={`${nameClass} font-semibold mb-2`} style="color: var(--text-heading);">{member.name}</h3>
+
+    <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
+          style={`background: color-mix(in srgb, ${accent} 12%, transparent); color: ${accent};`}>
+      {member.roleLabel}
+    </span>
+
+    {member.title && (
+      <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style={`color: var(--text-secondary); font-size: ${titleSize};`}>
+        {member.title}
+      </p>
+    )}
+
+    <p class="text-base leading-relaxed mt-5" style="color: var(--text-secondary);">
+      {member.bio}
+    </p>
+  </div>
+
+  {showLinks && <SocialLinks links={member.links} />}
+</div>
