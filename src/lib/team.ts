@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import type { SocialLinkSet } from './social';
 
 // Resolve team photos through Astro's asset pipeline. The .md files store a
 // bare filename (e.g. "alan_munoz_resized.jpg"); this glob maps each filename
@@ -15,7 +16,17 @@ for (const path in photoModules) {
 }
 
 export function teamPhoto(filename?: string): string | undefined {
-  return filename ? photosByFile[filename] : undefined;
+  if (!filename) return undefined;
+  const src = photosByFile[filename];
+  if (!src) {
+    // Fail loudly at build time, the way the old static imports did, instead
+    // of rendering a broken <img> for a mistyped or missing filename.
+    throw new Error(
+      `Team photo "${filename}" not found in src/assets/images/team/. ` +
+        `Fix the photo filename in the member's .md frontmatter or add the image.`
+    );
+  }
+  return src;
 }
 
 // Display labels for the role badge, keyed by the schema's role enum.
@@ -31,9 +42,10 @@ export const roleLabels: Record<CollectionEntry<'team'>['data']['role'], string>
   'alumni': 'Alumni',
 };
 
-// Roles shown as large "lead" cards vs. the smaller researcher cards.
-const LEAD_ROLES = ['principal-investigator', 'co-pi'] as const;
-const RESEARCHER_ROLES = ['postdoc', 'phd-student', 'research-scientist', 'visiting-scientist'] as const;
+// Roles shown as large "lead" cards at the top. Everyone else visible is
+// rendered in the smaller card grid below, so no role is ever silently
+// dropped (e.g. un-hiding a senior-consultant, or adding an alumni member).
+const LEAD_ROLES: readonly string[] = ['principal-investigator', 'co-pi'];
 
 export interface TeamCardMember {
   name: string;
@@ -41,7 +53,7 @@ export interface TeamCardMember {
   title: string;
   photoSrc?: string;
   bio: string;
-  links?: CollectionEntry<'team'>['data']['links'];
+  links?: SocialLinkSet;
 }
 
 function toCardMember(entry: CollectionEntry<'team'>): TeamCardMember {
@@ -51,19 +63,19 @@ function toCardMember(entry: CollectionEntry<'team'>): TeamCardMember {
   return { name, roleLabel, title, photoSrc: teamPhoto(photo), bio, links };
 }
 
-// Visible (non-hidden) team members, split into the page's two card tiers and
-// sorted by `order`. Hidden members (e.g. pending sign-off) are excluded.
-export async function getTeamGrouped(): Promise<{ leads: TeamCardMember[]; researchers: TeamCardMember[] }> {
-  const members = (await getCollection('team', ({ data }) => !data.hidden)).sort(
-    (a, b) => a.data.order - b.data.order
-  );
+// Visible team members, split into the page's two card tiers and sorted by
+// `order`. Members are excluded when `hidden` (e.g. pending sign-off) or when
+// `active` is explicitly false (e.g. they have left the lab).
+export async function getTeamGrouped(): Promise<{ leads: TeamCardMember[]; members: TeamCardMember[] }> {
+  const visible = (
+    await getCollection('team', ({ data }) => !data.hidden && data.active !== false)
+  ).sort((a, b) => a.data.order - b.data.order);
 
-  const leads = members
-    .filter((m) => (LEAD_ROLES as readonly string[]).includes(m.data.role))
-    .map(toCardMember);
-  const researchers = members
-    .filter((m) => (RESEARCHER_ROLES as readonly string[]).includes(m.data.role))
-    .map(toCardMember);
+  const leads: TeamCardMember[] = [];
+  const members: TeamCardMember[] = [];
+  for (const entry of visible) {
+    (LEAD_ROLES.includes(entry.data.role) ? leads : members).push(toCardMember(entry));
+  }
 
-  return { leads, researchers };
+  return { leads, members };
 }

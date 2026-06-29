@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import { SOCIAL_KEYS } from './lib/social';
 
 const team = defineCollection({
   type: 'content',
@@ -18,15 +19,11 @@ const team = defineCollection({
     title: z.string(),
     photo: z.string().optional(),
     email: z.string().email().optional(),
-    // Social / profile links rendered by SocialLinks.astro. Add keys here as
-    // new icons are supported.
+    // Social / profile links rendered by SocialLinks.astro. The supported
+    // keys come from src/lib/social.ts so the schema, type, and renderer
+    // stay in sync.
     links: z
-      .object({
-        linkedin: z.string().url().optional(),
-        github: z.string().url().optional(),
-        x: z.string().url().optional(),
-        cv: z.string().url().optional(),
-      })
+      .object(Object.fromEntries(SOCIAL_KEYS.map((k) => [k, z.string().url().optional()])))
       .optional(),
     bio: z.string(),
     order: z.number().default(99),

@@ -3,7 +3,7 @@ import PageLayout from '../layouts/PageLayout.astro';
 import TeamCard from '../components/team/TeamCard.astro';
 import { getTeamGrouped } from '../lib/team';
 
-const { leads, researchers } = await getTeamGrouped();
+const { leads, members } = await getTeamGrouped();
 ---
 
 <PageLayout
@@ -30,16 +30,9 @@ const { leads, researchers } = await getTeamGrouped();
         {leads.map(member => <TeamCard member={member} variant="lead" />)}
       </div>
 
-      <!-- Lab Members -->
-      <div class="text-center mt-28 mb-14">
-        <span class="section-label">The Lab</span>
-        <h2 class="mt-5" style="color: var(--text-heading); font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em;">
-          Researchers
-        </h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
-        {researchers.map(member => <TeamCard member={member} variant="member" />)}
+      <!-- Everyone else, same section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto mt-10">
+        {members.map(member => <TeamCard member={member} variant="member" />)}
       </div>
     </div>
   </section>

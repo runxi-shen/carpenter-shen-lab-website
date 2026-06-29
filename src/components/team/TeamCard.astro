@@ -4,12 +4,11 @@ import type { TeamCardMember } from '../../lib/team';
 
 interface Props {
   member: TeamCardMember;
-  // 'lead' = larger PI cards; 'member' = smaller researcher cards.
+  // 'lead' = larger PI cards; 'member' = smaller cards for everyone else.
   variant?: 'lead' | 'member';
-  showLinks?: boolean;
 }
 
-const { member, variant = 'member', showLinks = true } = Astro.props;
+const { member, variant = 'member' } = Astro.props;
 const accent = 'var(--purdue-aged)';
 
 const isLead = variant === 'lead';
@@ -46,5 +45,5 @@ const titleSize = isLead ? '0.95rem' : '0.9rem';
     </p>
   </div>
 
-  {showLinks && <SocialLinks links={member.links} />}
+  <SocialLinks links={member.links} />
 </div>
