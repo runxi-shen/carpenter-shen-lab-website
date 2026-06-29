@@ -18,13 +18,22 @@ const team = defineCollection({
     title: z.string(),
     photo: z.string().optional(),
     email: z.string().email().optional(),
-    website: z.string().url().optional(),
-    googleScholar: z.string().url().optional(),
-    twitter: z.string().optional(),
-    github: z.string().optional(),
+    // Social / profile links rendered by SocialLinks.astro. Add keys here as
+    // new icons are supported.
+    links: z
+      .object({
+        linkedin: z.string().url().optional(),
+        github: z.string().url().optional(),
+        x: z.string().url().optional(),
+        cv: z.string().url().optional(),
+      })
+      .optional(),
     bio: z.string(),
     order: z.number().default(99),
     active: z.boolean().default(true),
+    // When true, the member is kept in the collection but not rendered on the
+    // People page (e.g. pending sign-off to be listed publicly).
+    hidden: z.boolean().default(false),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
     affiliation: z.string().optional(),
