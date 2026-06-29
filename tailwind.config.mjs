@@ -5,10 +5,10 @@ export default {
     extend: {
       colors: {},
       fontFamily: {
-        display: ['"Barlow Condensed"', '"Franklin Gothic Medium"', 'sans-serif'],
-        body: ['"Source Serif 4"', 'Georgia', 'serif'],
-        mono: ['"Barlow Condensed"', '"Franklin Gothic Medium"', 'sans-serif'],
-        sans: ['"Barlow"', 'system-ui', 'sans-serif'],
+        display: ['"Plus Jakarta Sans"', '"Acumin Pro"', 'system-ui', 'sans-serif'],
+        body: ['"Plus Jakarta Sans"', '"Acumin Pro"', 'system-ui', 'sans-serif'],
+        mono: ['"Plus Jakarta Sans"', '"Acumin Pro"', 'system-ui', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', '"Acumin Pro"', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {},
       boxShadow: {},

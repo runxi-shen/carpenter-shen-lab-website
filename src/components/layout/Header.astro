@@ -113,42 +113,41 @@ const purdueUrl = 'https://www.purdue.edu/';
     background: var(--border-strong);
     flex-shrink: 0;
   }
-  /* Lab name — clickable like the nav links, with a hover underline.
-     border-bottom is reserved transparent so hovering never shifts layout. */
+  /* Lab name — clickable like the nav links, with a hover underline. */
   .wordmark-link {
     display: inline-flex;
     align-items: center;
-    border-bottom: 3px solid transparent;
-    transition: border-color 0.18s ease;
-  }
-  .wordmark-link:hover {
-    border-bottom-color: var(--purdue-rush);
   }
   .wordmark-link:hover .wordmark-title {
     color: var(--purdue-aged);
+    border-bottom-color: var(--purdue-rush);
   }
   .wordmark-title {
-    font-family: var(--font-label);
-    font-weight: 600;                    /* lighter than before, per feedback */
-    /* Sized a touch above the logo's matched cap height, with tighter
-       tracking so the wordmark reads as more condensed. */
-    font-size: 2rem;
-    letter-spacing: -0.012em;
+    display: inline-block;
+    font-family: var(--font-label);      /* Plus Jakarta Sans — natural width */
+    font-weight: 700;
+    font-size: 1.8rem;
+    letter-spacing: 0.01em;
     color: var(--text-heading);
     text-transform: uppercase;
     line-height: 1;
-    transition: color 0.18s ease;
+    /* transparent top/bottom borders keep the text vertically centred while
+       the bottom one lights up on hover */
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+    padding: 1px 0;
+    transition: color 0.18s ease, border-color 0.18s ease;
   }
 
   /* ─── Desktop nav links ─── */
   .nav-link {
     display: inline-flex;
     align-items: center;
-    padding: 0.4rem 0.85rem;
+    padding: 0.4rem 0.7rem;
     font-family: var(--font-label);
     font-weight: 600;                    /* less bold, still larger */
-    font-size: 1.35rem;
-    letter-spacing: 0.045em;
+    font-size: 1.05rem;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
     color: var(--text-heading);
     border-bottom: 3px solid transparent;
@@ -165,11 +164,11 @@ const purdueUrl = 'https://www.purdue.edu/';
     align-items: center;
     height: 4rem;                        /* matches the header's h-16 top bar */
     margin-left: 1rem;
-    padding: 0 1.5rem;
+    padding: 0 1.4rem;
     font-family: var(--font-label);
-    font-weight: 600;
-    font-size: 1.45rem;
-    letter-spacing: 0.05em;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
     color: #1A1A1A;
     background: var(--purdue-rush);

@@ -43,13 +43,14 @@ src/
 - Purdue brand reference: https://marcom.purdue.edu/our-brand/visual-identity/
 - **Authoritative brand rules for this repo** live in [`.agents/skills/purdue-brand/`](.agents/skills/purdue-brand/) (palette, typography, logo, voice, checklist).
 
-### Typography (Purdue-aligned free alternatives)
-- Headings (`h1`-`h6`): Source Serif 4 (serif), via `--font-display` — editorial serif for the redesign
-- UI/nav: Barlow (sans-serif), via `--font-heading` — replaces Acumin Pro
-- Labels/badges: Barlow Condensed (sans-serif), via `--font-label` — replaces United Sans
-- Body text: Source Serif 4 (serif), via `--font-body`, globally `text-align: justify`
-- The hero headline and body are also justified (both-side aligned), per Runxi's preference
-- Section subtitles under headers should be `text-center` (override the global justify)
+### Typography (single typeface: Plus Jakarta Sans)
+- **The entire site uses one font: Plus Jakarta Sans** (free, Google Fonts). Per Runxi's preference, the old serif (Source Serif 4) and the Barlow family were dropped — do not reintroduce them.
+- Purdue's real brand fonts (Acumin Pro, United Sans) are **paid Adobe Fonts** and cannot be self-hosted on the public GitHub Pages site, so Plus Jakarta Sans stands in as a free Acumin/Proxima-style geometric sans. To use real Acumin, an Adobe Fonts web-project kit ID would be required.
+- All five font CSS variables (`--font-display`, `--font-heading`, `--font-body`, `--font-label`, `--font-condensed` in `global.css`) point to Plus Jakarta Sans. Kept as separate tokens for flexibility, but currently identical.
+- **Two sources of truth for fonts** — `global.css` (CSS variables) AND `tailwind.config.mjs` (`fontFamily`, used by `font-*` utility classes like the footer's `font-body`). Change BOTH when swapping fonts, and **restart the dev server** (Tailwind config is not hot-reloaded).
+- The wordmark **CARPENTER-SHEN LAB** uses Plus Jakarta at natural width (no condensed squeeze — `scaleX` distorts the letterforms).
+- Section header pattern: a larger eyebrow (`.section-label`, ~1.2rem) over a smaller `h2` heading (capped ~2.5rem) so the pair reads balanced.
+- Body paragraphs are globally `text-align: justify`; section subtitles under headers should be `text-center` to override it.
 
 ### Hosting
 - Currently configured for GitHub Pages at `runxi-shen.github.io/carpenter-shen-lab-website` (`base: '/carpenter-shen-lab-website'` in `astro.config.mjs` — must match the exact GitHub repo name `runxi-shen/carpenter-shen-lab-website`, otherwise every asset 404s in production)
@@ -66,7 +67,7 @@ src/
 ### Writing Style
 - No em dashes in body text. Use commas or restructure sentences instead.
 - Body paragraphs are justified (both-side aligned).
-- Section headers use the `.section-label` class (monospace, gold, flanked by decorative lines).
+- Section headers use the `.section-label` class (uppercase Plus Jakarta, gold, flanked by decorative lines).
 
 ## Design workflow
 
