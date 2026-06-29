@@ -1,5 +1,6 @@
 ---
 import PageLayout from '../layouts/PageLayout.astro';
+import SocialLinks from '../components/team/SocialLinks.astro';
 import annePhoto from '../assets/images/team/Anne_Carpenter_resized.png';
 import runxiPhoto from '../assets/images/team/Runxi_Shen_resized.jpg';
 import alanPhoto from '../assets/images/team/alan_munoz_resized.jpg';
@@ -15,6 +16,12 @@ const teamMembers = [
     accentColor: 'var(--purdue-aged)',
     accentDim: 'var(--purdue-aged)',
     bio: 'Leading the JUMP, OASIS, and VISTA consortia and the Cells to Cures Engine at Purdue University, coordinating large-scale collaborative research efforts across institutions and industry partners to harness image-based profiling for accelerating drug discovery.',
+    links: {
+      linkedin: 'https://www.linkedin.com/in/annecarpenter1/',
+      github: 'https://github.com/AnneCarpenter',
+      x: 'https://x.com/DrAnneCarpenter',
+      cv: 'https://docs.google.com/document/d/1Mh9RGJS-JePq72bgFhmXxKR4GJhQutiUC-K6GPB_clM/preview?tab=t.0#heading=h.tgyhy1etikw1',
+    },
   },
   {
     name: 'Runxi Shen',
@@ -24,6 +31,12 @@ const teamMembers = [
     accentColor: 'var(--purdue-aged)',
     accentDim: 'var(--purdue-aged)',
     bio: 'Developing computational methods for extracting meaningful features from cell images and multi-omics datasets, and applying them to biological discoveries, spanning representation learning, deep learning, and large-scale morphological profiling.',
+    links: {
+      linkedin: 'https://www.linkedin.com/in/runxi-shen/',
+      github: 'https://github.com/runxi-shen',
+      x: 'https://x.com/wshenrx',
+      cv: 'https://runxi-shen.github.io/cv/',
+    },
   },
 ];
 
@@ -80,28 +93,32 @@ const labMembers = [
       <!-- PI Cards -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
         {teamMembers.map(member => (
-          <div class="card-base text-center group p-10">
-            <img
-              src={member.photo}
-              alt={member.name}
-              class="w-40 h-40 rounded-full mx-auto mb-6 object-cover"
-              style={`border: 3px solid ${member.accentDim};`}
-            />
+          <div class="card-base text-center group p-10 flex flex-col">
+            <div class="pb-8">
+              <img
+                src={member.photo}
+                alt={member.name}
+                class="w-40 h-40 rounded-full mx-auto mb-6 object-cover"
+                style={`border: 3px solid ${member.accentDim};`}
+              />
 
-            <h3 class="text-2xl font-semibold mb-2" style="color: var(--text-heading);">{member.name}</h3>
+              <h3 class="text-2xl font-semibold mb-2" style="color: var(--text-heading);">{member.name}</h3>
 
-            <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
-                  style={`background: color-mix(in srgb, ${member.accentColor} 12%, transparent); color: ${member.accentColor};`}>
-              {member.role}
-            </span>
+              <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
+                    style={`background: color-mix(in srgb, ${member.accentColor} 12%, transparent); color: ${member.accentColor};`}>
+                {member.role}
+              </span>
 
-            <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style="color: var(--text-secondary); font-size: 0.95rem;">
-              {member.title}
-            </p>
+              <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style="color: var(--text-secondary); font-size: 0.95rem;">
+                {member.title}
+              </p>
 
-            <p class="text-base leading-relaxed" style="color: var(--text-secondary);">
-              {member.bio}
-            </p>
+              <p class="text-base leading-relaxed" style="color: var(--text-secondary);">
+                {member.bio}
+              </p>
+            </div>
+
+            <SocialLinks links={member.links} />
           </div>
         ))}
       </div>
@@ -116,30 +133,34 @@ const labMembers = [
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-6xl mx-auto">
         {labMembers.map(member => (
-          <div class="card-base text-center group p-8">
-            <img
-              src={member.photo}
-              alt={member.name}
-              class="w-32 h-32 rounded-full mx-auto mb-6 object-cover"
-              style={`border: 3px solid ${member.accentDim};`}
-            />
+          <div class="card-base text-center group p-8 flex flex-col">
+            <div class="pb-8">
+              <img
+                src={member.photo}
+                alt={member.name}
+                class="w-32 h-32 rounded-full mx-auto mb-6 object-cover"
+                style={`border: 3px solid ${member.accentDim};`}
+              />
 
-            <h3 class="text-xl font-semibold mb-2" style="color: var(--text-heading);">{member.name}</h3>
+              <h3 class="text-xl font-semibold mb-2" style="color: var(--text-heading);">{member.name}</h3>
 
-            <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
-                  style={`background: color-mix(in srgb, ${member.accentColor} 12%, transparent); color: ${member.accentColor};`}>
-              {member.role}
-            </span>
+              <span class="inline-block text-sm font-semibold font-mono px-4 py-1.5 rounded-full mt-1 mb-2"
+                    style={`background: color-mix(in srgb, ${member.accentColor} 12%, transparent); color: ${member.accentColor};`}>
+                {member.role}
+              </span>
 
-            {member.title && (
-              <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style="color: var(--text-secondary); font-size: 0.9rem;">
-                {member.title}
+              {member.title && (
+                <p class="text-base font-medium font-mono mt-1 mb-5 text-center" style="color: var(--text-secondary); font-size: 0.9rem;">
+                  {member.title}
+                </p>
+              )}
+
+              <p class="text-base leading-relaxed mt-5" style="color: var(--text-secondary);">
+                {member.bio}
               </p>
-            )}
+            </div>
 
-            <p class="text-base leading-relaxed mt-5" style="color: var(--text-secondary);">
-              {member.bio}
-            </p>
+            <SocialLinks links={member.links} />
           </div>
         ))}
       </div>
