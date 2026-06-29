@@ -8,12 +8,8 @@
 // brand glyphs; CV is a custom document/resume mark to stay visually
 // consistent with the others.
 
-export interface SocialLinkSet {
-  linkedin?: string;
-  github?: string;
-  x?: string;
-  cv?: string;
-}
+import { SOCIAL_LINKS, type SocialLinkSet } from '../../lib/social';
+export type { SocialLinkSet };
 
 interface Props {
   links?: SocialLinkSet;
@@ -21,15 +17,8 @@ interface Props {
 
 const { links = {} } = Astro.props;
 
-// Ordered so the row reads the same on every card.
-const order: { key: keyof SocialLinkSet; label: string }[] = [
-  { key: 'linkedin', label: 'LinkedIn' },
-  { key: 'github', label: 'GitHub' },
-  { key: 'x', label: 'X (Twitter)' },
-  { key: 'cv', label: 'CV' },
-];
-
-const present = order.filter(({ key }) => links[key]);
+// Render order comes from the shared SOCIAL_LINKS source of truth.
+const present = SOCIAL_LINKS.filter(({ key }) => links[key]);
 ---
 
 {present.length > 0 && (

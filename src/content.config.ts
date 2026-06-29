@@ -1,4 +1,5 @@
 import { defineCollection, z } from 'astro:content';
+import { SOCIAL_KEYS } from './lib/social';
 
 const team = defineCollection({
   type: 'content',
@@ -18,13 +19,18 @@ const team = defineCollection({
     title: z.string(),
     photo: z.string().optional(),
     email: z.string().email().optional(),
-    website: z.string().url().optional(),
-    googleScholar: z.string().url().optional(),
-    twitter: z.string().optional(),
-    github: z.string().optional(),
+    // Social / profile links rendered by SocialLinks.astro. The supported
+    // keys come from src/lib/social.ts so the schema, type, and renderer
+    // stay in sync.
+    links: z
+      .object(Object.fromEntries(SOCIAL_KEYS.map((k) => [k, z.string().url().optional()])))
+      .optional(),
     bio: z.string(),
     order: z.number().default(99),
     active: z.boolean().default(true),
+    // When true, the member is kept in the collection but not rendered on the
+    // People page (e.g. pending sign-off to be listed publicly).
+    hidden: z.boolean().default(false),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
     affiliation: z.string().optional(),
