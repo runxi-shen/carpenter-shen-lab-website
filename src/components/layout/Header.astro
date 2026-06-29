@@ -126,11 +126,15 @@ const purdueUrl = 'https://www.purdue.edu/';
     display: inline-block;
     font-family: var(--font-label);      /* Plus Jakarta Sans — natural width */
     font-weight: 700;
-    font-size: 1.8rem;
-    letter-spacing: 0.01em;
+    font-size: 1.65rem;
+    letter-spacing: -0.025em;             /* denser, slightly narrower */
     color: var(--text-heading);
     text-transform: uppercase;
     line-height: 1;
+    /* Optical nudge: with line-height:1 the cap band centres ~0.5px below the
+       logo because of the font's asymmetric asc/descent metrics. Lift to
+       align the caps with the mark. */
+    transform: translateY(-0.5px);
     /* transparent top/bottom borders keep the text vertically centred while
        the bottom one lights up on hover */
     border-top: 3px solid transparent;
