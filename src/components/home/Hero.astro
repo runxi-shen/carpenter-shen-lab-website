@@ -54,6 +54,15 @@ const base = import.meta.env.BASE_URL;
 </section>
 
 <style>
+  /* Pull the hero up under the fixed header (which adds pt-20 / 5rem on
+     <main>) and restore that space as internal padding. This makes the
+     background + gold wash + grain continuous from the very top, removing
+     the flat-cream strip that otherwise showed as a seam under the nav. */
+  .hero-section {
+    margin-top: -5rem;
+    padding-top: 5rem;
+  }
+
   .hero-card {
     background: rgba(255, 255, 255, 0.55);
     border: 1px solid rgba(142, 111, 62, 0.18);

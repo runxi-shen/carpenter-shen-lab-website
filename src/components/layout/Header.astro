@@ -11,6 +11,7 @@ const navLinks = [
 ];
 
 const joinUrl = 'https://docs.google.com/document/d/1R5kSSUX4A3x0CZYsTUdUtxPJYHRwZ04SIl5G06_MrlQ/preview?tab=t.0';
+const purdueUrl = 'https://www.purdue.edu/';
 ---
 
 <header
@@ -18,26 +19,34 @@ const joinUrl = 'https://docs.google.com/document/d/1R5kSSUX4A3x0CZYsTUdUtxPJYHR
   style="background: var(--nav-bg); border-color: var(--nav-border);"
 >
   <div class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-    <div class="flex items-stretch justify-between h-16">
+    <div class="flex items-center justify-between h-16">
 
-      <!-- Wordmark — Purdue logo + lab name, links to home -->
-      <a href={base} class="flex items-center gap-3 sm:gap-4 leading-none" aria-label="Carpenter-Shen Lab — Purdue University, Home">
-        <img src={purdueLogo.src} alt="Purdue University" class="purdue-mark" />
+      <!-- Brand cluster — Purdue logo links to purdue.edu; lab name links home -->
+      <div class="flex items-center gap-3 sm:gap-4">
+        <a
+          href={purdueUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="brand-logo-link"
+          aria-label="Purdue University"
+        >
+          <img src={purdueLogo.src} alt="Purdue University" class="purdue-mark" />
+        </a>
         <span class="wordmark-divider" aria-hidden="true"></span>
-        <span class="wordmark-title">
-          Carpenter-Shen Lab
-        </span>
-      </a>
+        <a href={base} class="wordmark-link" aria-label="Carpenter-Shen Lab — Home">
+          <span class="wordmark-title">Carpenter-Shen Lab</span>
+        </a>
+      </div>
 
-      <!-- Desktop Navigation — stretches full height to match Join button -->
-      <nav class="hidden lg:flex items-stretch gap-0">
+      <!-- Desktop Navigation — all items vertically centered -->
+      <nav class="hidden lg:flex items-center gap-0">
         {navLinks.map(link => (
           <a href={link.href} class="nav-link">
             {link.label}
           </a>
         ))}
 
-        <!-- Join the Lab — rectangular CTA, same height as nav -->
+        <!-- Join the Lab — rectangular CTA, vertically centered -->
         <a
           href={joinUrl}
           target="_blank"
@@ -81,51 +90,80 @@ const joinUrl = 'https://docs.google.com/document/d/1R5kSSUX4A3x0CZYsTUdUtxPJYHR
 
 <style>
   /* ─── Wordmark ─── */
+  /* The logo height (1.65rem) is the single source of truth for the brand
+     cluster: the divider matches it exactly, and the lab name is sized so
+     its uppercase cap height reads as visually equal to the mark. */
   .purdue-mark {
-    height: 1.65rem;                     /* official horizontal PU lockup */
+    height: 1.5rem;                      /* official horizontal PU lockup */
     width: auto;
+    display: block;
     flex-shrink: 0;
+  }
+  .brand-logo-link {
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.18s ease;
+  }
+  .brand-logo-link:hover {
+    opacity: 0.8;
   }
   .wordmark-divider {
     width: 1px;
-    align-self: stretch;
-    margin: 0.35rem 0;
+    height: 1.5rem;
     background: var(--border-strong);
+    flex-shrink: 0;
+  }
+  /* Lab name — clickable like the nav links, with a hover underline.
+     border-bottom is reserved transparent so hovering never shifts layout. */
+  .wordmark-link {
+    display: inline-flex;
+    align-items: center;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.18s ease;
+  }
+  .wordmark-link:hover {
+    border-bottom-color: var(--purdue-rush);
+  }
+  .wordmark-link:hover .wordmark-title {
+    color: var(--purdue-aged);
   }
   .wordmark-title {
     font-family: var(--font-label);
     font-weight: 600;                    /* lighter than before, per feedback */
-    font-size: clamp(1.45rem, 2.4vw, 1.9rem);
-    letter-spacing: 0.02em;
+    /* Sized a touch above the logo's matched cap height, with tighter
+       tracking so the wordmark reads as more condensed. */
+    font-size: 2rem;
+    letter-spacing: -0.012em;
     color: var(--text-heading);
     text-transform: uppercase;
     line-height: 1;
+    transition: color 0.18s ease;
   }
 
   /* ─── Desktop nav links ─── */
   .nav-link {
     display: inline-flex;
     align-items: center;
-    padding: 0 0.85rem;
+    padding: 0.4rem 0.85rem;
     font-family: var(--font-label);
     font-weight: 600;                    /* less bold, still larger */
     font-size: 1.35rem;
     letter-spacing: 0.045em;
     text-transform: uppercase;
     color: var(--text-heading);
-    border-top: 3px solid transparent;   /* balances the bottom border so text is vertically centered */
     border-bottom: 3px solid transparent;
-    transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    transition: color 0.18s ease, border-color 0.18s ease;
   }
   .nav-link:hover {
     color: var(--purdue-aged);
     border-bottom-color: var(--purdue-rush);
   }
 
-  /* ─── Join the Lab — rectangular, full-height block ─── */
+  /* ─── Join the Lab — rectangular CTA, full bar height ─── */
   .join-cta {
     display: inline-flex;
     align-items: center;
+    height: 4rem;                        /* matches the header's h-16 top bar */
     margin-left: 1rem;
     padding: 0 1.5rem;
     font-family: var(--font-label);
