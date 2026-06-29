@@ -2,7 +2,7 @@
 name: "Runxi Shen"
 role: "co-pi"
 title: "Research Assistant Professor"
-bio: "Developing computational methods for extracting meaningful features from cell images and applying them to biological discoveries."
+bio: "Developing computational methods for extracting meaningful features from cell images and multi-omics datasets, and applying them to biological discoveries."
 order: 2
 active: true
 ---
