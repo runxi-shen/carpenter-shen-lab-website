@@ -45,8 +45,10 @@ export interface TeamCardMember {
 }
 
 function toCardMember(entry: CollectionEntry<'team'>): TeamCardMember {
-  const { name, role, title, photo, bio, links } = entry.data;
-  return { name, roleLabel: roleLabels[role], title, photoSrc: teamPhoto(photo), bio, links };
+  const { name, role, title, photo, bio, links, affiliation } = entry.data;
+  // Append the affiliation to the role badge (e.g. "Visiting Scientist, ONO Pharma").
+  const roleLabel = affiliation ? `${roleLabels[role]}, ${affiliation}` : roleLabels[role];
+  return { name, roleLabel, title, photoSrc: teamPhoto(photo), bio, links };
 }
 
 // Visible (non-hidden) team members, split into the page's two card tiers and
