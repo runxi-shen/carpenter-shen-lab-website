@@ -1,5 +1,6 @@
 ---
-// import vimeoThumbnail from '../../assets/images/icons/vimeo_thumbnail.png';
+import { Image } from 'astro:assets';
+import jumpLogo from '../../assets/images/icons/jump_cellpainting-343x221.png';
 
 const base = import.meta.env.BASE_URL;
 
@@ -29,9 +30,12 @@ const projects = [
     description:
       'We are building the world’s largest open library of how cells respond to over 136,000 drugs and genetic changes, giving AI the training data it needs to accelerate the discovery of new medicines for any disease.',
     url: 'https://jump-cellpainting.broadinstitute.org/',
-    label: 'JUMP Cell Painting',
+    label: 'JUMP-Cell Painting Consortium',
     from: 'var(--purdue-field)',
     to: 'var(--purdue-aged)',
+    image: jumpLogo,
+    imageAlt:
+      'JUMP Cell Painting illustration: a field of stained cells with one magnified to show its organelles.',
   },
 ];
 ---
@@ -91,24 +95,45 @@ const projects = [
 
     <div class="project-list">
       {projects.map((p, i) => (
-        <article class={`project-row ${i % 2 === 1 ? 'is-reversed' : ''}`}>
-          <!-- Media placeholder — Purdue colour block until imagery is added -->
-          <div class="project-media" style={`--from: ${p.from}; --to: ${p.to};`}>
-            <span class="project-media-label">Image coming soon</span>
-          </div>
+        p.image ? (
+          /* Feature row — two-tone band: pale zone holds the illustration,
+             gold zone holds the text, magnified cell straddles the seam */
+          <article class="project-row feature-row">
+            <figure class="feature-image">
+              <Image src={p.image} alt={p.imageAlt} widths={[343]} sizes="(max-width: 767px) 80vw, 40vw" />
+            </figure>
 
-          <!-- Text -->
-          <div class="project-text">
-            <h3 class="project-title">{p.title}</h3>
-            <p class="project-desc">{p.description}</p>
-            <a href={p.url} target="_blank" rel="noopener noreferrer" class="project-link">
-              Learn more
-              <svg class="project-link-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
-        </article>
+            <div class="feature-text">
+              <h3 class="project-title">{p.title}</h3>
+              <p class="project-desc">{p.description}</p>
+              <a href={p.url} target="_blank" rel="noopener noreferrer" class="project-link feature-link">
+                {p.label}
+                <svg class="project-link-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        ) : (
+          <article class={`project-row ${i % 2 === 1 ? 'is-reversed' : ''}`}>
+            <!-- Media placeholder — Purdue colour block until imagery is added -->
+            <div class="project-media" style={`--from: ${p.from}; --to: ${p.to};`}>
+              <span class="project-media-label">Image coming soon</span>
+            </div>
+
+            <!-- Text -->
+            <div class="project-text">
+              <h3 class="project-title">{p.title}</h3>
+              <p class="project-desc">{p.description}</p>
+              <a href={p.url} target="_blank" rel="noopener noreferrer" class="project-link">
+                Learn more
+                <svg class="project-link-arrow" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </article>
+        )
       ))}
     </div>
   </div>
@@ -217,6 +242,57 @@ const projects = [
     transform: translateX(4px);
   }
 
+  /* ─── Feature row: image rectangle partially overlapping a gold panel ─── */
+  .feature-row {
+    position: relative;
+    /* image-zone | shared overlap | text — image fills the left, its right
+       edge lapping onto the gold panel that starts under the overlap track */
+    grid-template-columns: 36% 6% 58%;
+    gap: 0;
+    align-items: center;
+  }
+  /* The text block IS the gold panel; the image overlaps its left edge */
+  .feature-text {
+    grid-row: 1;
+    grid-column: 2 / 4;
+    z-index: 1;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: linear-gradient(135deg, #F5E8C2 0%, #ECD8A2 100%);
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 12px 34px rgba(142, 111, 62, 0.10);
+    /* left padding clears the overlapping illustration */
+    padding: 2.5rem 3rem 2.5rem 4.5rem;
+  }
+  .feature-image {
+    grid-row: 1;
+    grid-column: 1 / 3;
+    z-index: 2;
+    margin: 0;
+    justify-self: start;       /* flush to the band's left edge — no left gap */
+  }
+  .feature-image :global(img) {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    filter: drop-shadow(0 14px 24px rgba(142, 111, 62, 0.20));
+  }
+  .feature-link {
+    font-size: 1.2rem;        /* a touch larger than the standard project link */
+    margin-top: 0.35rem;
+  }
+  .feature-link .project-link-arrow {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+  .feature-text .project-desc {
+    color: #4a4334;        /* warm dark for contrast on the gold panel */
+  }
+
   /* ─── Mobile: stack, media always on top ─── */
   @media (max-width: 767px) {
     .project-row,
@@ -228,6 +304,33 @@ const projects = [
       order: 0;
     }
     .project-desc {
+      text-align: left;
+    }
+
+    /* Feature row collapses: illustration on top dips onto the gold panel below */
+    .feature-row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+    .feature-image {
+      grid-row: 1;
+      grid-column: 1;
+      justify-self: center;
+      margin: 0;
+      transform: translateY(1.75rem);
+      z-index: 2;
+    }
+    .feature-image :global(img) {
+      margin: 0 auto;
+      max-width: 280px;
+    }
+    .feature-text {
+      grid-row: 2;
+      grid-column: 1;
+      padding: 3.5rem 1.75rem 2.25rem;
+      text-align: center;
+    }
+    .feature-text .project-desc {
       text-align: left;
     }
   }
