@@ -40,17 +40,22 @@ const projects = [
 ];
 ---
 
-<section id="research" class="py-28 px-4 sm:px-6 lg:px-8 scroll-mt-24" style="background: var(--bg-content);">
-  <div class="max-w-7xl mx-auto">
-    <!-- Section header -->
-    <div class="text-center mb-16">
-      <span class="section-label">What We Do</span>
-      <h2 class="mt-4" style="color: var(--text-heading);">Research</h2>
-      <div class="section-divider mt-8 w-24 mx-auto"></div>
-    </div>
+<section id="research" class="scroll-mt-16" style="background: var(--bg-content);">
+  <!-- Full-viewport video banner: jumping to #research shows only this -->
+  <div class="research-banner px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto w-full">
+      <!-- Section header -->
+      <div class="text-center mb-10">
+        <span class="section-label">What We Do</span>
+        <h2 class="mt-3" style="color: var(--text-heading);">Research</h2>
+        <p class="mt-6 max-w-6xl mx-auto" style="color: var(--text-secondary); font-size: clamp(1.05rem, 1.25vw, 1.2rem); line-height: 1.6; text-align: justify; text-justify: inter-word;">
+          We develop advanced methods and software to make discoveries in cell images. The rich information can reveal the causes and cures for diseases, and the impact of chemicals on biological systems. We work across all disease areas, from cancer and psychiatric disease to rare disorders and infectious disease.
+        </p>
+        <div class="section-divider mt-7 w-24 mx-auto"></div>
+      </div>
 
-    <!-- Videos: Anne's YouTube on left, Runxi's YouTube on right -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+      <!-- Videos: Anne's YouTube on left, Runxi's YouTube on right -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
       <!-- Anne's YouTube: Lab overview / research talk -->
       <div>
         <div class="rounded-xl overflow-hidden shadow-lg" style="background: var(--bg-card); border: 1px solid var(--border-card);">
@@ -84,16 +89,21 @@ const projects = [
         </div>
         <p class="video-caption">Runxi Shen: Cell Painting for Rare Disease and Drug Discovery</p>
       </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Problems we want to solve — alternating text / media rows -->
-    <div class="text-center mb-16">
-      <span class="section-label">Our Focus</span>
-      <h2 class="mt-4" style="color: var(--text-heading);">Problems to solve</h2>
-      <div class="section-divider mt-8 w-24 mx-auto"></div>
-    </div>
+  <!-- Problems to solve — separate block, revealed on scroll below the banner -->
+  <div class="px-4 sm:px-6 lg:px-8 pt-12 pb-24">
+    <div class="max-w-7xl mx-auto">
+      <!-- Problems we want to solve — alternating text / media rows -->
+      <div class="text-center mb-16">
+        <span class="section-label">Our Focus</span>
+        <h2 class="mt-4" style="color: var(--text-heading);">Problems to solve</h2>
+        <div class="section-divider mt-8 w-24 mx-auto"></div>
+      </div>
 
-    <div class="project-list">
+      <div class="project-list">
       {projects.map((p, i) => (
         p.image ? (
           /* Feature row — two-tone band: pale zone holds the illustration,
@@ -135,11 +145,27 @@ const projects = [
           </article>
         )
       ))}
+      </div>
     </div>
   </div>
 </section>
 
 <style>
+  /* Full-viewport banner: fills the screen below the fixed 65px nav, content
+     vertically centered. min-height (not height) lets it grow on short windows
+     so nothing clips. svh keeps it stable across browser/fullscreen chrome. */
+  .research-banner {
+    min-height: calc(100svh - 65px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+  @supports not (height: 100svh) {
+    .research-banner { min-height: calc(100vh - 65px); }
+  }
+
   .video-caption {
     margin-top: 0.75rem;
     text-align: center;
